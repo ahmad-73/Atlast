@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rdicidr-deployment
+  namespace: production
+  labels:
+    app: rdicidr
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: rdicidr
+  template:
+    metadata:
+      labels:
+        app: rdicidr
+    spec:
+      containers:
+      - name: rdicidr
+        image: docker.io/ahmad762249/rdicidr-0.1.0
+        ports:
+        - containerPort: 80
