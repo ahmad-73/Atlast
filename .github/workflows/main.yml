@@ -66,5 +66,10 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/rdicidr-0.1.0:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/rdicidr-0.1.0:${{ github.sha }}
-
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1 # Change to your desired AWS region
      
