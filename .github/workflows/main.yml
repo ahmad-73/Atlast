@@ -67,40 +67,4 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/rdicidr-0.1.0:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/rdicidr-0.1.0:${{ github.sha }}
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-1 # Change to your desired AWS region
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Create ECR repository if it doesn't exist
-        run: |
-          aws ecr create-repository \
-            --repository-name rdicidr_repo1 \
-            --region us-east-1 \
-            --no-paginate || true # '|| true' allows the workflow to continue if the repo already exists
-
-      - name: Build and tag Docker image for ECR
-        working-directory: codebase/rdicidr-0.1.0
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: rdicidr_repo1
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
-
-      - name: Push Docker image to ECR
-        working-directory: codebase/rdicidr-0.1.0
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: rdicidr_repo1
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+     
