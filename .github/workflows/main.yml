@@ -66,7 +66,7 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/rdicidr-0.1.0:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/rdicidr-0.1.0:${{ github.sha }}
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials                   #Dont use the below steps (line 69 to 74 )
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
